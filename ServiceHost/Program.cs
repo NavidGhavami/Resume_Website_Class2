@@ -1,9 +1,37 @@
+using Microsoft.EntityFrameworkCore;
+using Resume.Application.Services.Implementation.User;
+using Resume.Application.Services.Interface.User;
+using Resume.Domain.Context;
+using Resume.Domain.Entities.User;
+using Resume.Domain.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+#region General Services
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddTransient<IUserService, UserService>();
+
+#endregion
+
+
+#region Database Config
+
+var connectionString = builder.Configuration.GetConnectionString("ResumeWebsite_2");
+
+builder.Services.AddDbContext<DatabaseContext>(option =>
+	option.UseSqlServer(connectionString), ServiceLifetime.Transient);
+
+#endregion
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
