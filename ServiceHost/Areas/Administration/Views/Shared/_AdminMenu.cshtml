@@ -1,0 +1,45 @@
+﻿
+
+
+
+<aside id="leftsidebar" class="sidebar">
+    <!-- Menu -->
+    <div class="menu">
+        <ul class="list">
+            <li>
+                <div class="sidebar-profile clearfix">
+                    <div class="profile-img">
+                        <img src="~/AdminSite/assets/images/usrbig.jpg" alt="profile">
+                    </div>
+                    <div class="profile-info">
+                        <h3>حسین حیاتی</h3>
+                        <p>خوش آمدید !</p>
+                    </div>
+                </div>
+            </li>
+            <li class="active">
+                <a href="#" onClick="return false;" class="menu-toggle">
+                    <i class="menu-icon ti-home"></i>
+                    <span>صفحه اصلی</span>
+                </a>
+                <ul class="ml-menu">
+                    <li class="active">
+                        <a asp-area="Administration" asp-controller="Home" asp-action="Index">داشبورد</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" onClick="return false;" class="menu-toggle">
+                    <i class="menu-icon ti-shopping-cart-full"></i>
+                    <span>فروشگاه</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a href="pages/ecommerce/products.html">محصولات</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- #Menu -->
+</aside>
