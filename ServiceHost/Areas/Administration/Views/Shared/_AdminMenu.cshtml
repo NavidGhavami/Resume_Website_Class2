@@ -30,12 +30,15 @@
             </li>
             <li>
                 <a href="#" onClick="return false;" class="menu-toggle">
-                    <i class="menu-icon ti-shopping-cart-full"></i>
-                    <span>فروشگاه</span>
+                    <i class="menu-icon ti-user"></i>
+                    <span>مدیریت کاربران</span>
                 </a>
                 <ul class="ml-menu">
                     <li>
-                        <a href="pages/ecommerce/products.html">محصولات</a>
+                        <a asp-area="Administration" asp-controller="User" asp-action="UserList">
+                            <i class="menu-icon ti-angle-left"></i>
+                            لیست کاربران
+                        </a>
                     </li>
                 </ul>
             </li>
