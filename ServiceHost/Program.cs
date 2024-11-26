@@ -8,8 +8,14 @@ using Resume.Domain.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+var mvcBuilder =  builder.Services.AddControllersWithViews();
 
+
+#if DEBUG
+
+mvcBuilder.AddRazorRuntimeCompilation();
+
+#endif
 
 #region General Services
 

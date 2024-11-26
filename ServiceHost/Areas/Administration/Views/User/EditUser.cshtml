@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "ویرایش کاربر";
+}
+
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-white">
+        <ul class="breadcrumb breadcrumb-style" style="float:right;">
+            <li class="breadcrumb-item">
+                <h4 class="page-title">@ViewData["Title"]</h4>
+            </li>
+            <li class="breadcrumb-item bcrumb-1">
+                <a asp-area="Administration" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-home"></i> داشبورد
+                </a>
+            </li>
+            <li class="breadcrumb-item bcrumb-2">
+                <a href="#" onclick="return false;">کاربر جدید</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="row clearfix">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+            <div class="header">
+                <h2>
+                    <strong>ویرایش</strong> کاربر
+                </h2>
+            </div>
+            <form asp-area="Administration" asp-controller="User" asp-action="EditUser" method="post">
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" placeholder="نام و نام خانوادگی">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" placeholder="ایمیل">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" placeholder="شماره همراه">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="password" class="form-control" placeholder="رمز عبور">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="password" class="form-control" placeholder="تکرار رمز عبور">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <p>
+                                        <label>
+                                            <input type="checkbox" checked="checked">
+                                            <span>بلاک شده /نشده؟</span>
+                                        </label>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <div class="file-field input-field">
+                                        <div class="btn">
+                                            <span>آپلود تصویر آواتار</span>
+                                            <input type="file">
+                                        </div>
+                                        <div class="file-path-wrapper">
+                                            <input class="file-path validate valid" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning w-25">ثبت اطلاعات</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
