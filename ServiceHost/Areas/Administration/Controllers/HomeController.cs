@@ -8,5 +8,10 @@ namespace ServiceHost.Areas.Administration.Controllers
         {
             return View();
         }
+
+        public ActionResult NotFoundPage()
+        {
+            return View();
+        }
     }
 }

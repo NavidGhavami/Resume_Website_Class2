@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Resume.Application.Services.Interface.User;
 using Resume.Domain.Dtos.User;
 
@@ -47,7 +48,24 @@ namespace ServiceHost.Areas.Administration.Controllers
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser(CreateUserDto user)
         {
-            return View();
+            var result = await _userService.CreateUser(user);
+
+            switch (result)
+            {
+                case CreateUserResult.DuplicateMobile:
+                    TempData["DuplicateMobile"] = "شماره همراه تکراری می باشد";
+                    return View();
+                case CreateUserResult.Success:
+                    TempData["Success"] = "عملیات با موفقیت انجام شد";
+                    return RedirectToAction("UserList", "User", new { area = "administration" });
+
+                case CreateUserResult.Error:
+                    return View(user);
+                default:
+                    return NotFound();
+            }
+
+            return View(user);
         }
 
         #endregion

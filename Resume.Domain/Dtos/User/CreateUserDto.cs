@@ -42,4 +42,11 @@ namespace Resume.Domain.Dtos.User
 
         #endregion
     }
+
+    public enum CreateUserResult
+    {
+        Success,
+        Error,
+        DuplicateMobile
+    }
 }

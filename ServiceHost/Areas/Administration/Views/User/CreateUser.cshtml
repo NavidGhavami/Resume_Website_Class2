@@ -1,8 +1,11 @@
-﻿
+﻿@model Resume.Domain.Dtos.User.CreateUserDto
+
 @{
     ViewData["Title"] = "ایجاد کاربر جدید";
 }
 
+
+<partial name="_JqueryValidators"/>
 
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-white">
@@ -38,21 +41,23 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" placeholder="نام و نام خانوادگی">
+                                    <input type="text" class="form-control" asp-for="Fullname" placeholder="نام و نام خانوادگی">
+                                    <span class="text-danger" asp-validation-for="Fullname"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" placeholder="ایمیل">
+                                    <input type="text" class="form-control" asp-for="Email" placeholder="ایمیل">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" placeholder="شماره همراه">
+                                    <input type="text" class="form-control" asp-for="Mobile" placeholder="شماره همراه">
+                                    <span class="text-danger" asp-validation-for="Mobile"></span>
                                 </div>
                             </div>
                         </div>
@@ -61,14 +66,16 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="password" class="form-control" placeholder="رمز عبور">
+                                    <input type="password" class="form-control" asp-for="Password" placeholder="رمز عبور">
+                                    <span class="text-danger" asp-validation-for="Password"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="password" class="form-control" placeholder="تکرار رمز عبور">
+                                    <input type="password" class="form-control" asp-for="ConfirmPassword" placeholder="تکرار رمز عبور">
+                                    <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +87,7 @@
                                 <div class="form-line">
                                     <p>
                                         <label>
-                                            <input type="checkbox" checked="checked">
+                                            <input type="checkbox" asp-for="IsBlock" checked="">
                                             <span>بلاک شده /نشده؟</span>
                                         </label>
                                     </p>
@@ -93,12 +100,12 @@
                                     <div class="file-field input-field">
                                         <div class="btn">
                                             <span>آپلود تصویر آواتار</span>
-                                            <input type="file">
+                                            <input asp-for="Avatar" type="file">
                                         </div>
                                         <div class="file-path-wrapper">
                                             <input class="file-path validate valid" type="text">
                                         </div>
-                                    </div>z
+                                    </div>
                                 </div>
                             </div>
                         </div>
