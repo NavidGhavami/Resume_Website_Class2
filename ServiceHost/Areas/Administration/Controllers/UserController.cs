@@ -29,9 +29,12 @@ namespace ServiceHost.Areas.Administration.Controllers
         #region Users List
 
         [HttpGet("users-list")]
-        public async Task<IActionResult> UserList()
+        public async Task<IActionResult> UserList(FilterUserDto filter, string fullname, string mobile)
         {
-            return View();
+            filter.Fullname = fullname;
+            filter.Mobile = mobile;
+            var users = await _userService.GetAllUsers(filter);
+            return View(users);
         }
 
         #endregion
@@ -48,6 +51,12 @@ namespace ServiceHost.Areas.Administration.Controllers
         [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser(CreateUserDto user)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var result = await _userService.CreateUser(user);
 
             switch (result)

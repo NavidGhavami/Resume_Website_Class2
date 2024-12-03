@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MarketPlace.Application.Utilities;
+using Microsoft.EntityFrameworkCore;
 using Resume.Application.Services.Interface.User;
 using Resume.Domain.Dtos.User;
-using Resume.Domain.Entities.User;
 using Resume.Domain.Repository;
 
 namespace Resume.Application.Services.Implementation.User
@@ -33,23 +33,40 @@ namespace Resume.Application.Services.Implementation.User
             return await _userRepository.GetQuery().AsQueryable().AnyAsync(x => x.Mobile == mobile);
         }
 
-
-
         #endregion
 
         #region Filter Users
 
-        public async Task<FilterUserDto> GetAllUsers()
+        public async Task<List<FilterUserDto>> GetAllUsers(FilterUserDto filter)
         {
-            var user = _userRepository.GetQuery().AsQueryable().Where(x=>!x.IsDelete);
+            var query = _userRepository.GetQuery().AsQueryable();
 
-            //return new FilterUserDto
-            //{
-            //    Fullname = user.fullname
-            //};
+            if (!string.IsNullOrWhiteSpace(filter.Fullname))
+            {
+                query = query.Where(x => EF.Functions.Like(x.Fullname, $"%{filter.Fullname}%"));
+                //query = query.Where(x => x.Fullname.Contains(filter.Fullname));
+            }
 
+            if (!string.IsNullOrWhiteSpace(filter.Mobile))
+            {
+                query = query.Where(x => EF.Functions.Like(x.Mobile, $"%{filter.Mobile}%"));
+            }
+
+            var allUsers = query.Select(x => new FilterUserDto
+            {
+                Id = x.Id,
+                Fullname = x.Fullname,
+                Mobile = x.Mobile,
+                Email = x.Email,
+                IsBlock = x.IsBlock,
+                Avatar = x.Avatar,
+                CreateDate = x.CreateDate.ToStringShamsiDate()
+            }).ToListAsync();
+
+
+            return await allUsers;
         }
-
+        
         #endregion
 
 
