@@ -69,10 +69,7 @@ namespace Resume.Application.Services.Implementation.User
         
         #endregion
 
-
         #region Create User
-
-
 
         public async Task<CreateUserResult> CreateUser(CreateUserDto user)
         {
@@ -102,6 +99,108 @@ namespace Resume.Application.Services.Implementation.User
 
         }
 
+
+
+        #endregion
+
+        #region Edit User
+
+        public async Task<EditUserDto> GetForEditUser(long id)
+        {
+            var user = await _userRepository
+                .GetQuery()
+                .AsQueryable()
+                .FirstOrDefaultAsync(x=>x.Id == id);
+
+            if (user == null)
+            {
+                return new EditUserDto();
+            }
+
+            return new EditUserDto
+            {
+                Id = id,
+                Fullname = user.Fullname,
+                Mobile = user.Mobile,
+                Email = user.Email,
+                Password = user.Password,
+                ConfirmPassword = user.ConfirmPassword,
+                IsBlock = user.IsBlock,
+                Avatar = user.Avatar
+            };
+        }
+
+        public async Task<EditUserResult> EditUser(EditUserDto command)
+        {
+            var user = await _userRepository
+                .GetQuery()
+                .AsQueryable()
+                .FirstOrDefaultAsync(x => x.Id == command.Id);
+
+            if (user == null)
+            {
+                return EditUserResult.NotFoundUser;
+            }
+
+            user.Fullname = command.Fullname;
+            user.Email = command.Email;
+            user.Password = command.Password;
+            user.ConfirmPassword = command.ConfirmPassword;
+            user.Mobile = command.Mobile;
+            user.IsBlock = command.IsBlock;
+            user.Avatar = command.Avatar;
+            user.UpdateDate = DateTime.Now;
+
+            _userRepository.EditEntity(user);
+            await _userRepository.SaveChanges();
+
+            return EditUserResult.Success;
+
+        }
+
+        #endregion
+
+        #region Block and UnBlock User
+
+        public async Task<bool> BlockUser(long id)
+        {
+            var user = await _userRepository
+                .GetQuery()
+                .AsQueryable()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.IsBlock = true;
+
+            _userRepository.EditEntity(user);
+            await _userRepository.SaveChanges();
+
+            return true;
+        }
+
+        public async Task<bool> UnBlockUser(long id)
+        {
+            var user = await _userRepository
+                .GetQuery()
+                .AsQueryable()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.IsBlock = false;
+
+            _userRepository.EditEntity(user);
+            await _userRepository.SaveChanges();
+
+            return true;
+        }
 
         #endregion
 
