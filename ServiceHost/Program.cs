@@ -4,6 +4,7 @@ using Resume.Application.Services.Interface.User;
 using Resume.Domain.Context;
 using Resume.Domain.Entities.User;
 using Resume.Domain.Repository;
+using ServiceHost.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,13 +18,7 @@ mvcBuilder.AddRazorRuntimeCompilation();
 
 #endif
 
-#region General Services
-
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-builder.Services.AddTransient<IUserService, UserService>();
-
-#endregion
+builder.Services.RegisterService();
 
 
 #region Database Config

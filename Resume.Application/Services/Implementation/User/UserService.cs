@@ -1,6 +1,8 @@
 ﻿using MarketPlace.Application.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Resume.Application.Services.Interface;
 using Resume.Application.Services.Interface.User;
+using Resume.Application.Utilities;
 using Resume.Domain.Dtos.User;
 using Resume.Domain.Repository;
 
@@ -11,17 +13,17 @@ namespace Resume.Application.Services.Implementation.User
         #region fields
 
         private readonly IGenericRepository<Domain.Entities.User.User> _userRepository;
-
-
+        private readonly IPasswordHasher _passwordHasher;
 
         #endregion
 
 
         #region Constructor
 
-        public UserService(IGenericRepository<Domain.Entities.User.User> userRepository)
+        public UserService(IGenericRepository<Domain.Entities.User.User> userRepository, IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
         }
 
         #endregion
@@ -77,13 +79,14 @@ namespace Resume.Application.Services.Implementation.User
 
             if (!await IsUserExistByMobile(user.Mobile))
             {
+                var hashPassword = _passwordHasher.EncodePasswordMd5(user.Password);
                 var newUser = new Domain.Entities.User.User
                 {
                     Fullname = user.Fullname,
                     Email = user.Email,
                     Mobile = user.Mobile,
-                    Password = user.Password,
-                    ConfirmPassword = user.ConfirmPassword,
+                    Password = hashPassword,
+                    ConfirmPassword = hashPassword,
                     IsBlock = user.IsBlock,
                     Avatar = null,
                 };
@@ -111,6 +114,7 @@ namespace Resume.Application.Services.Implementation.User
                 .GetQuery()
                 .AsQueryable()
                 .FirstOrDefaultAsync(x=>x.Id == id);
+
 
             if (user == null)
             {
@@ -142,10 +146,13 @@ namespace Resume.Application.Services.Implementation.User
                 return EditUserResult.NotFoundUser;
             }
 
+            //var hashPassword = _passwordHasher.EncodePasswordMd5(user.Password);
+            var hashPassword = SHA256PasswordHasher.HashPasswordSHA256(command.Password);
+
             user.Fullname = command.Fullname;
             user.Email = command.Email;
-            user.Password = command.Password;
-            user.ConfirmPassword = command.ConfirmPassword;
+            user.Password = hashPassword;
+            user.ConfirmPassword = hashPassword;
             user.Mobile = command.Mobile;
             user.IsBlock = command.IsBlock;
             user.Avatar = command.Avatar;
