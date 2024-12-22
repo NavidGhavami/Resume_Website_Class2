@@ -68,7 +68,27 @@ namespace Resume.Application.Services.Implementation.User
 
             return await allUsers;
         }
-        
+
+        #endregion
+
+        #region User Details
+
+        public async Task<UserDetailDto> GetUserDetail()
+        {
+            var user = await _userRepository.GetQuery().AsQueryable().FirstOrDefaultAsync(x=>!x.IsBlock);
+
+            return new UserDetailDto
+            {
+                Fullname = user.Fullname,
+                Mobile = user.Mobile,
+                Email = user.Email,
+                BirthDate = user.BirthDate,
+                BirthPlace = user.BirthPlace,
+                Description = user.Description,
+                Avatar = user.Avatar
+            };
+        }
+
         #endregion
 
         #region Create User
@@ -85,6 +105,9 @@ namespace Resume.Application.Services.Implementation.User
                     Fullname = user.Fullname,
                     Email = user.Email,
                     Mobile = user.Mobile,
+                    BirthDate = user.BirthDate,
+                    BirthPlace = user.BirthPlace,
+                    Description = user.Description,
                     Password = hashPassword,
                     ConfirmPassword = hashPassword,
                     IsBlock = user.IsBlock,
@@ -127,6 +150,9 @@ namespace Resume.Application.Services.Implementation.User
                 Fullname = user.Fullname,
                 Mobile = user.Mobile,
                 Email = user.Email,
+                BirthDate = user.BirthDate,
+                BirthPlace = user.BirthPlace,
+                Description = user.Description,
                 Password = user.Password,
                 ConfirmPassword = user.ConfirmPassword,
                 IsBlock = user.IsBlock,
@@ -154,6 +180,9 @@ namespace Resume.Application.Services.Implementation.User
             user.Password = hashPassword;
             user.ConfirmPassword = hashPassword;
             user.Mobile = command.Mobile;
+            user.BirthDate = command.BirthDate;
+            user.BirthPlace = command.BirthPlace;
+            user.Description = command.Description;
             user.IsBlock = command.IsBlock;
             user.Avatar = command.Avatar;
             user.UpdateDate = DateTime.Now;
