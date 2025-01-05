@@ -15,39 +15,49 @@ namespace Resume.Domain.Repository
             _dbSet = context.Set<TEntity>();
         }
 
+
+
         public IQueryable<TEntity> GetQuery()
         {
             return _dbSet.AsQueryable();
         }
 
+        //Create
         public async Task AddEntity(TEntity entity)
         {
             entity.CreateDate = DateTime.Now;
-            entity.UpdateDate = DateTime.Now;
+            entity.UpdateDate = entity.CreateDate;
             await _dbSet.AddAsync(entity);
         }
 
+        //Get Entity By Id
         public async Task<TEntity> GetEntityById(long entityId)
         {
             return await _dbSet.SingleOrDefaultAsync(x => x.Id == entityId);
         }
 
+
+        //Edit
         public void EditEntity(TEntity entity)
         {
-            _dbSet.Update(entity);
             entity.UpdateDate = DateTime.Now;
+            _dbSet.Update(entity);
         }
 
+
+        //Delete Entity
         public void DeleteEntity(TEntity entity)
         {
             entity.IsDelete = true;
             EditEntity(entity);
         }
 
-        public async Task DeleteEntityById(long entityId)
+
+        //Find Id then Delete
+        public async Task DeleteEntityBy(long entityId)
         {
-            var entity = await _dbSet.SingleOrDefaultAsync(x=>x.Id == entityId);
-            DeleteEntity(entity);
+            TEntity entity = await GetEntityById(entityId);
+            if (entity != null) DeleteEntity(entity);
         }
 
         public void DeletePermanent(TEntity entity)
@@ -55,21 +65,34 @@ namespace Resume.Domain.Repository
             _dbSet.Remove(entity);
         }
 
+        public void DeletePhysically(TEntity entity)
+        {
+            _dbSet.Remove(entity);
+        }
+
+        public async Task DeletePermanentBy(long entityId)
+        {
+            var entity = await GetEntityById(entityId);
+            if (entity != null)
+            {
+                DeletePermanent(entity);
+            }
+        }
+
         public async Task SaveChanges()
         {
             await _context.SaveChangesAsync();
         }
 
-        #region Dispose
 
+        //Dispose
         public async ValueTask DisposeAsync()
         {
             if (_context != null)
             {
                 await _context.DisposeAsync();
             }
-        }
 
-        #endregion
+        }
     }
 }

@@ -1,142 +1,103 @@
-﻿@model List<Resume.Domain.Dtos.User.FilterUserDto>
+﻿@model List<Resume.Application.Dtos.User.FilterUserDto>
+
 
 @{
     ViewData["Title"] = "لیست کاربران";
 }
 
 
-
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-white">
-        <ul class="breadcrumb breadcrumb-style" style="float:right;">
-            <li class="breadcrumb-item">
-                <h4 class="page-title">@ViewData["Title"]</h4>
-            </li>
-            <li class="breadcrumb-item bcrumb-1">
-                <a asp-area="Administration" asp-controller="Home" asp-action="Index">
-                    <i class="fas fa-home"></i> داشبورد
-                </a>
-            </li>
-            <li class="breadcrumb-item bcrumb-2">
-                <a href="#" onclick="return false;">لیست کاربران</a>
-            </li>
-        </ul>
+<div class="block-header">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <ul class="breadcrumb breadcrumb-style" style="float: right; ">
+                <li class="breadcrumb-item">
+                    <h4 class="page-title">@ViewData["Title"]</h4>
+                </li>
+                <li class="breadcrumb-item bcrumb-1">
+                    <a asp-area="Administration" asp-controller="Home" asp-action="Index">داشبورد</a>
+                </li>
+                <li class="breadcrumb-item bcrumb-2">
+                    <a href="#" onclick="return false;">@ViewData["Title"]</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
+
+
+
 
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>
-                                <strong>جستجو</strong> کاربران
-                            </h2>
-                        </div>
-                        <form asp-area="Administration" asp-controller="User" asp-action="UserList" method="get">
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <div class="form-group form-float">
-                                            <div class="form-line">
-                                                <input type="text" name="Fullname" class="form-control">
-                                                <label class="form-label">نام و نام خانوادگی</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-4 col-xs-6">
-                                        <div class="form-group form-float">
-                                            <div class="form-line">
-                                                <input type="text" name="Mobile" class="form-control">
-                                                <label class="form-label">تلفن همراه</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <div class="form-group form-float">
-                                            <div class="form-line">
-                                                <button type="submit" class="btn btn-dark btn-block submit m-3">جستجو</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+            <div class="table-responsive m-t-40">
+                <table class="table table-hover table-striped table-bordered">
+                    <div class="form-line">
+                        <a asp-area="Administration" asp-controller="User" asp-action="CreateUser" type="submit" class="btn btn-success submit m-3">ایجاد کاربر جدید</a>
                     </div>
-                </div>
+                    <thead class="bg-black text-white">
+                        <tr>
+                            <th class="text-center">ردیف</th>
+                            <th class="text-center">تصویر</th>
+                            <th class="text-center">نام و نام خانوادگی</th>
+                            <th class="text-center">ایمیل</th>
+                            <th class="text-center">تلفن همراه</th>
+                            <th class="text-center">وضعیت</th>
+                            <th class="text-center">تاریخ ایجاد</th>
+                            <th class="text-center">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@user.Id</td>
+                                <td class="table-img text-center">
+                                    <img width="50" height="50" src="~/Admin/assets/images/user/no-image.jpg" alt="@user.Fullname">
+                                </td>
+                                <td class="text-center">@user.Fullname</td>
+                                <td class="text-center">@user.Email</td>
+                                <td class="text-center">@user.Mobile</td>
+                                @if (!user.IsBlock)
+                                {
+                                    <td class="text-center">
+                                        <i class="material-icons text-success">check_circle</i>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">
+                                        <i class="material-icons text-danger">block</i>
+                                    </td>
+                                }
+                                <td class="text-center">@user.CreateDate</td>
+                                <td class="text-center">
+                                    <a asp-area="Administration" asp-controller="User" asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-warning">
+                                        <i class="material-icons">mode_edit</i>
+                                    </a>
+                                    @if (!user.IsBlock)
+                                    {
+                                        <a asp-area="Administration" asp-controller="User" 
+                                           asp-action="BlockUser" asp-route-id="@user.Id" class="btn btn-danger">
+                                            <i class="material-icons">block</i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="Administration" asp-controller="User"
+                                           asp-action="UnblockUser" asp-route-id="@user.Id" class="btn btn-success">
+                                            <i class="material-icons">check_circle</i>
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
 
 
-<div class="col-md-12">
-
-    <div class="table-responsive m-t-40">
-        <table class="table table-hover table-striped">
-            <div class="form-line">
-                <a asp-area="Administration" asp-controller="User" asp-action="CreateUser" class="btn btn-success submit m-3">ایجاد کاربر جدید</a>
-            </div>
-            <thead class="bg-dark text-white">
-                <tr>
-                    <th class="text-center">ردیف</th>
-                    <th class="text-center">تصویر</th>
-                    <th class="text-center">نام و نام خانوادگی</th>
-                    <th class="text-center">شماره همراه</th>
-                    <th class="text-center">ایمیل</th>
-                    <th class="text-center">وضعیت</th>
-                    <th class="text-center">تاریخ ایجاد</th>
-                    <th class="text-center">عملیات</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var user in Model)
-                {
-                    <tr>
-                        <td class="text-center">@user.Id</td>
-                        <td class="table-img text-center">
-                            <img width="60" height="60" src="~/AdminSite/assets/images/user/No_image.jpg" alt="@user.Fullname" title="@user.Fullname">
-                        </td>
-                        <td class="text-center">@user.Fullname</td>
-                        <td class="text-center">@user.Mobile</td>
-                        <td class="text-center">@user.Email</td>
-                        @if (@user.IsBlock == false)
-                        {
-                            <td class="text-center">
-                                <i class="material-icons text-success">check_circle</i>
-                            </td>
-                        }
-                        else
-                        {
-                            <td class="text-center">
-                                <i class="material-icons text-danger">block</i>
-                            </td>
-                        }
-                        <td class="text-center">@user.CreateDate</td>
-                        <td class="text-center">
-                            <a class="btn btn-warning" asp-area="Administration" 
-                               asp-controller="User" asp-action="EditUser" asp-route-id="@user.Id">
-                                <i class="material-icons ">mode_edit</i>
-                            </a>
-                            @if (user.IsBlock)
-                            {
-                                <a asp-area="Administration" asp-controller="User" asp-action="UnBlockUser" asp-route-id="@user.Id" class="btn btn-success">
-                                    <i class="material-icons">check_circle</i>
-                                </a>
-                            }
-                            else
-                            {
-                                <a asp-area="Administration" asp-controller="User" asp-action="BlockUser" asp-route-id="@user.Id" class="btn btn-danger">
-                                    <i class="material-icons">block</i>
-                                </a>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
 

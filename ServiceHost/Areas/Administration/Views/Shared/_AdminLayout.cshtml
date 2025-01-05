@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-    <title>@ViewData["Title"] | ادمین</title>
+
+    <partial name="_MetaTagsReferences" />
+    <title>ادمین | @ViewData["Title"]</title>
 
     <partial name="_HeaderReferences" />
 </head>
@@ -12,7 +14,7 @@
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="m-t-30">
-                <img class="loading-img-spin" src="~/AdminSite/assets/images/loading.png" alt="admin">
+                <img class="loading-img-spin" src="~/Admin/assets/images/loading.png" alt="admin">
             </div>
             <p>لطفا صبر کنید...</p>
         </div>
@@ -29,7 +31,7 @@
                    aria-expanded="false"></a>
                 <a href="#" onClick="return false;" class="bars"></a>
                 <a class="navbar-brand" href="index.html">
-                    <img src="~/AdminSite/assets/images/logo.png" alt="" />
+                    <img src="~/Admin/assets/images/logo.png" alt="" />
                     <span class="logo-name">مدیریت سایت</span>
                 </a>
             </div>
@@ -51,7 +53,7 @@
                     <!-- #END# Full Screen Button -->
                     <li class="dropdown user_profile">
                         <div class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="~/AdminSite/assets/images/user.jpg" alt="user">
+                            <img src="~/Admin/assets/images/user.jpg" alt="user">
                         </div>
                         <ul class="dropdown-menu pullDown">
                             <li class="body">
@@ -62,7 +64,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" onClick="return false;">
+                                        <a asp-controller="Account" asp-action="Logout">
                                             <i class="material-icons">power_settings_new</i>خروج
                                         </a>
                                     </li>
@@ -71,6 +73,11 @@
                         </ul>
                     </li>
                     <!-- #END# Tasks -->
+                    <li class="pull-right">
+                        <a href="#" onClick="return false;" class="js-right-sidebar" data-close="true">
+                            <i class="nav-hdr-btn ti-layout-grid2"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -81,7 +88,7 @@
         @await Component.InvokeAsync("LeftSidebar")
         <!-- #END# Left Sidebar -->
     </div>
-    
+
     <section class="content">
         <div class="container-fluid">
             @RenderBody()

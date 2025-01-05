@@ -12,7 +12,7 @@ using Resume.Domain.Context;
 namespace Resume.Domain.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241110164541_Initial_Database")]
+    [Migration("20241103131408_Initial_Database")]
     partial class Initial_Database
     {
         /// <inheritdoc />

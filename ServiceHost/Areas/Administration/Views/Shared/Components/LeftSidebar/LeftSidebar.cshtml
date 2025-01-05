@@ -1,11 +1,8 @@
-﻿@using Resume.Domain.Dtos.User
+﻿@using Resume.Application.Dtos.User
 
 @{
     UserDetailDto user = ViewData["User"] as UserDetailDto ?? new UserDetailDto();
 }
-
-
-
 
 <aside id="leftsidebar" class="sidebar">
     <!-- Menu -->
@@ -14,10 +11,10 @@
             <li>
                 <div class="sidebar-profile clearfix">
                     <div class="profile-img">
-                        <img src="~/AdminSite/assets/images/usrbig.jpg" alt="profile">
+                        <img src="~/Admin/assets/images/usrbig.jpg" alt="profile">
                     </div>
                     <div class="profile-info">
-                        <h3>@user.Fullname، عزیز</h3>
+                        <h3>@user.Fullname عزیز، </h3>
                         <p>خوش آمدید !</p>
                     </div>
                 </div>
@@ -35,15 +32,12 @@
             </li>
             <li>
                 <a href="#" onClick="return false;" class="menu-toggle">
-                    <i class="menu-icon ti-user"></i>
+                    <i class="menu-icon ti-shopping-cart-full"></i>
                     <span>مدیریت کاربران</span>
                 </a>
                 <ul class="ml-menu">
                     <li>
-                        <a asp-area="Administration" asp-controller="User" asp-action="UserList">
-                            <i class="menu-icon ti-angle-left"></i>
-                            لیست کاربران
-                        </a>
+                        <a asp-area="Administration" asp-controller="User" asp-action="UserList" >لیست کاربران</a>
                     </li>
                 </ul>
             </li>

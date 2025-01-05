@@ -1,7 +1,7 @@
-﻿using Resume.Application.Services.Implementation;
-using Resume.Application.Services.Implementation.User;
+﻿using MarketPlace.Application.Services.Implementations;
+using MarketPlace.Application.Services.Interfaces;
+using Resume.Application.Services.Implementation;
 using Resume.Application.Services.Interface;
-using Resume.Application.Services.Interface.User;
 using Resume.Domain.Repository;
 
 namespace ServiceHost.Configuration
@@ -13,9 +13,11 @@ namespace ServiceHost.Configuration
             #region Repositories
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddTransient<IPasswordHasher, PasswordHasher>();
+
 
             #endregion
+
 
             #region General Services
 

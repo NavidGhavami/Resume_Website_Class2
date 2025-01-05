@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Resume.Application.Services.Interface.User;
+using Resume.Application.Services.Interface;
 
 namespace ServiceHost.ViewComponents
 {
@@ -11,18 +11,17 @@ namespace ServiceHost.ViewComponents
 
         public SiteHeaderViewComponent(IUserService userService)
         {
-            _userService = userService;
+	        _userService = userService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var user = await _userService.GetUserDetail();
+            var user = await _userService.GetUserInformation();
             return View("SiteHeader",user);
         }
     }
 
     #endregion
-
 
     #region Site Footer
 
@@ -32,7 +31,7 @@ namespace ServiceHost.ViewComponents
         {
             return View("SiteFooter");
         }
-    }
+    } 
 
     #endregion
 }

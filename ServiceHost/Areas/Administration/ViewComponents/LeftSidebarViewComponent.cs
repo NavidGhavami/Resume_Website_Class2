@@ -1,37 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Resume.Application.Services.Interface.User;
-using Resume.Domain.IdentityExtensions;
+using Resume.Application.IdentityExtensions;
+using Resume.Application.Services.Interface;
 
 namespace ServiceHost.Areas.Administration.ViewComponents
 {
-    public class LeftSidebarViewComponent : ViewComponent
-    {
-        #region Fields
+	#region Left Sidebar
 
-        private readonly IUserService _userService;
+	public class LeftSidebarViewComponent : ViewComponent
+	{
+		#region Fieilds
+
+		private readonly IUserService _userService;
+
+		#endregion
 
 
+		#region Constructor
 
-        #endregion
+		public LeftSidebarViewComponent(IUserService userService)
+		{
+			_userService = userService;
+		}
 
+		#endregion
 
-        #region Constructor
-
-        public LeftSidebarViewComponent(IUserService userService)
+		public async Task<IViewComponentResult> InvokeAsync()
         {
-            _userService = userService;
-        }
-
-        #endregion
-
-
-        public async Task<IViewComponentResult> InvokeAsync()
-        {
-
+            var user = await _userService.GetUserById(User.GetUserId());
 
             ViewData["User"] = await _userService.GetUserById(User.GetUserId());
+			return View("LeftSidebar");
+		}
+	}
 
-            return View("LeftSidebar");
-        }
-    }
+	#endregion
 }

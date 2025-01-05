@@ -2,115 +2,106 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Resume.Application.Services.Interface.User;
-using Resume.Domain.Dtos.User;
+using Resume.Application.Dtos.User;
+using Resume.Application.Services.Interface;
 
 namespace ServiceHost.Controllers
 {
-    public class AccountController : SiteBaseController
-    {
-        #region Fields
+	public class AccountController : SiteBaseController
+	{
+		#region Fields
 
-        private readonly IUserService _userService;
+		private readonly IUserService _userService;
 
+		#endregion
 
-        #endregion
+		#region Constructor
 
-        #region Constructor
+		public AccountController(IUserService userService)
+		{
+			_userService = userService;
+		}
 
-        public AccountController(IUserService userService)
-        {
-            _userService = userService;
-        }
+		#endregion
 
-        #endregion
+		#region Actions
 
+		#region Login
 
-        #region Actions
+		[HttpGet("login")]
+		public IActionResult Login()
+		{
+			if (User.Identity.IsAuthenticated)
+			{
+				return RedirectToAction("Index", "Home", new { area = "Administration" });
+			}
+			return View();
+		}
 
+		[HttpPost("login")]
+		public async Task<IActionResult> Login(UserLoginDto userLogin)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(userLogin);
+			}
 
-        #region Login
+			var result = await _userService.UserLogin(userLogin);
 
-        [HttpGet("login")]
-        public IActionResult Login()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home", new { area = "Administration" });
-            }
+			switch (result)
+			{
+				case UserLoginResult.Success:
+					var user = await _userService.GetUserBy(userLogin.Mobile);
 
-            return View();
-        }
+					#region Login
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto command)
-        {
+					var claims = new List<Claim>
+					{
+						new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+						new Claim(ClaimTypes.Name, $"{user.Fullname}"),
+						new Claim(ClaimTypes.MobilePhone, user.Mobile)
+					};
 
-            if (!ModelState.IsValid)
-            {
-                return View(command);
-            }
+					var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var result = await _userService.UserLogin(command);
+					var principal = new ClaimsPrincipal(identity);
+					var properties = new AuthenticationProperties
+					{
+						IsPersistent = true
+					};
 
-            switch (result)
-            {
-                case UserLoginResult.Success:
-                    var user = await _userService.GetUserByMobile(command.Mobile);
+					await HttpContext.SignInAsync(principal, properties);
 
-                    #region Login
+					TempData[SuccessMessage] = $"{user.Fullname} عزیز، خوش آمدید";
 
-                    var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                        new Claim(ClaimTypes.Name, $"{user.Fullname}"),
-                        new Claim(ClaimTypes.MobilePhone, user.Mobile)
-                    };
+					#endregion
 
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                    var principal = new ClaimsPrincipal(identity);
-                    var properties = new AuthenticationProperties
-                    {
-                        IsPersistent = true
-                    };
-
-                    await HttpContext.SignInAsync(principal, properties);
-
-                    #endregion
-
-                    TempData[SuccessMessage] = $"{user.Fullname} عزیز، خوش آمدید";
-
-                    return RedirectToAction("Index", "Home", new { area = "Administration" });
+					return RedirectToAction("Index", "Home", new { area = "Administration" });
 
                 case UserLoginResult.Error:
-                    TempData[ErrorMessage] = "در انجام عملیات خطایی رخ داد. لطفا دوباره تلاش نمایید";
-                    break;
-                case UserLoginResult.NotUserFound:
-                    TempData[ErrorMessage] = "کاربری با مشخصات فوق یافت نشد";
-                    break;
+					TempData[ErrorMessage] = "خطایی رخ داد. لطفا مجددا تلاش نمایید";
+                    return View(userLogin);
+				case UserLoginResult.UserNotFound:
+					TempData[ErrorMessage] = "کاربری با مشخصات فوق یافت نشد";
+                    return View(userLogin);
+			}
 
-            }
+			return View();
+		}
 
-            return View();
-        }
+		#endregion
 
-        #endregion
+		#region Logout
 
-
-        #region Logout
-
-        [HttpGet("logout")]
+		[HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+			return RedirectToAction("Index","Home");
         }
 
         #endregion
 
-
-
-        #endregion
-    }
+		#endregion
+	}
 }

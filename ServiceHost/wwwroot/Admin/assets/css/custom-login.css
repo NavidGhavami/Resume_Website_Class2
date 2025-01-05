@@ -1,0 +1,10 @@
+﻿
+.light{
+    background-color : black !important;
+}
+
+
+.mail,
+.passwd{
+    text-align : right !important;
+}

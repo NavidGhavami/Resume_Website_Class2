@@ -5,7 +5,7 @@
 namespace Resume.Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_BirthDate_BirthPlace_Description_to_User_Entity : Migration
+    public partial class Add_BirthDAte_BirthPlace_Description_to_UserEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

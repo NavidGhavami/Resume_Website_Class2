@@ -5,32 +5,26 @@ namespace Resume.Domain.Context
 {
     public class DatabaseContext : DbContext
     {
+        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-	    #region Constructor
+        #region User
 
-	    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
+        public DbSet<User> Users { get; set; }
 
-		#endregion
+        #endregion
 
-		#region User
+        #region On Model Creating
 
-		public DbSet<User> Users { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(s=>s.GetForeignKeys()))
+            {
+                
+            }
 
-		#endregion
+            base.OnModelCreating(modelBuilder);
+        }
 
-
-		#region On Model Creating
-
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-	    {
-		    foreach (var relation in modelBuilder.Model.GetEntityTypes().SelectMany(x=>x.GetForeignKeys()))
-		    {
-			    relation.DeleteBehavior = DeleteBehavior.Cascade;
-		    }
-		    base.OnModelCreating(modelBuilder);
-	    }
-
-	    #endregion
-
+        #endregion
     }
 }

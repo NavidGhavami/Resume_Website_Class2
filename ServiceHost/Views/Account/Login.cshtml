@@ -1,4 +1,4 @@
-﻿@model Resume.Domain.Dtos.User.LoginDto
+﻿@model Resume.Application.Dtos.User.UserLoginDto
 
 
 @{
@@ -13,37 +13,37 @@
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<title>ورود کاربر </title>
 	<!-- Favicon-->
-	<link rel="icon" href="~/AdminSite/assets/images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="~/Admin/assets/images/favicon.ico" type="image/x-icon">
 	<!-- Plugins Core Css -->
-	<link href="~/AdminSite/assets/css/app.min.css" rel="stylesheet">
-	<link href="~/AdminSite/assets/js/bundles/materialize-rtl/materialize-rtl.min.css" rel="stylesheet">
+	<link href="~/Admin/assets/css/app.min.css" rel="stylesheet">
+	<link href="~/Admin/assets/js/bundles/materialize-rtl/materialize-rtl.min.css" rel="stylesheet">
 	<!-- Custom Css -->
-	<link href="~/AdminSite/assets/css/style.css" rel="stylesheet" />
-	<link href="~/AdminSite/assets/css/pages/extra_pages.css" rel="stylesheet" />
-	<link href="~/AdminSite/assets/css/custom-login.css" rel="stylesheet" />
+	<link href="~/Admin/assets/css/style.css" rel="stylesheet" />
+	<link href="~/Admin/assets/css/pages/extra_pages.css" rel="stylesheet" />
+	<link href="~/Admin/assets/css/custom-login.css" rel="stylesheet" />
 </head>
 
 <body class="light rtl">
 	<div class="loginmain">
 		<div class="loginCard">
 			@* <div class="login-btn splits">
-			<p>در حال حاضر یک کاربر؟</p>
-			<button class="active">ورود</button>
+				<p>در حال حاضر یک کاربر؟</p>
+				<button class="active">ورود</button>
 			</div> *@
 			<div class="rgstr-btn splits">
 				<p>خوش آمدید. جهت ورود اطلاعات لازم را وارد نمایید</p>
 			</div>
 			<div class="wrapper">
-				<form id="login" asp-controller="Account" asp-action="Login" method="post" tabindex="500">
+                <form id="login" asp-controller="Account" asp-action="Login" method="post" tabindex="500">
 					<h3>ورود</h3>
 					<div class="mail">
 						<input asp-for="Mobile" type="text">
-						<label>شماره همراه</label>
+                        <label>شماره همراه</label>
 						<span asp-validation-for="Mobile" class="text-danger "></span>
 					</div>
 					<div class="passwd">
 						<input asp-for="Password" type="password">
-						<label>رمزعبور</label>
+                        <label>رمزعبور</label>
 						<span asp-validation-for="Password" class="text-danger "></span>
 					</div>
 					<div class="text-right p-t-8 p-b-31">
@@ -52,7 +52,7 @@
 						</a>
 					</div>
 					<div class="submit">
-						<button type="submit" class="dark btn-block">ورود</button>
+						<button type="submit" class="dark">ورود</button>
 					</div>
 					<div class="flex-c p-b-112">
 						<a href="#" class="login100-social-item bg-fb">
@@ -70,9 +70,9 @@
 		</div>
 	</div>
 	<!-- Plugins Js -->
-	<script src="~/AdminSite/assets/js/app.min.js"></script>
+	<script src="~/Admin/assets/js/app.min.js"></script>
 	<!-- Extra page Js -->
-	<script src="~/AdminSite/assets/js/pages/examples/login-register.js"></script>
+	<script src="~/Admin/assets/js/pages/examples/login-register.js"></script>
 </body>
 
 </html>

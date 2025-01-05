@@ -6,24 +6,23 @@ using ServiceHost.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var mvcBuilder =  builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews();
 
 
-#if DEBUG
-
-mvcBuilder.AddRazorRuntimeCompilation();
-
-#endif
+#region Di Container
 
 builder.Services.RegisterService();
 
+#endregion
 
-#region Database Config
 
-var connectionString = builder.Configuration.GetConnectionString("ResumeWebsite_2");
+#region ConfigDatabase
+
+var connectionString = builder.Configuration.GetConnectionString("ResumeWebsite");
 
 builder.Services.AddDbContext<DatabaseContext>(option =>
-	option.UseSqlServer(connectionString), ServiceLifetime.Transient);
+    option.UseSqlServer(connectionString), ServiceLifetime.Transient);
+
 
 #endregion
 
@@ -36,6 +35,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
 }).AddCookie(options =>
 {
     options.LoginPath = "/login";
@@ -46,9 +46,8 @@ builder.Services.AddAuthentication(options =>
 
 #endregion
 
+
 var app = builder.Build();
-
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -68,10 +67,12 @@ app.UseAuthorization();
 
 
 app.MapControllerRoute(
+
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
+
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 

@@ -1,14 +1,16 @@
-﻿namespace Resume.Domain.Dtos.User
+﻿namespace Resume.Application.Dtos.User
 {
     public class EditUserDto : CreateUserDto
     {
         public long Id { get; set; }
     }
 
+
     public enum EditUserResult
     {
         Success,
-        NotFoundUser,
-        Error
+        Error,
+        NotFound
     }
+
 }

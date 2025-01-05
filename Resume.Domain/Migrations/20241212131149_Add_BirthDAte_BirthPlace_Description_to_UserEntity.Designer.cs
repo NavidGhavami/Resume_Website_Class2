@@ -12,8 +12,8 @@ using Resume.Domain.Context;
 namespace Resume.Domain.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241222161503_Add_BirthDate_BirthPlace_Description_to_User_Entity")]
-    partial class Add_BirthDate_BirthPlace_Description_to_User_Entity
+    [Migration("20241212131149_Add_BirthDAte_BirthPlace_Description_to_UserEntity")]
+    partial class Add_BirthDAte_BirthPlace_Description_to_UserEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

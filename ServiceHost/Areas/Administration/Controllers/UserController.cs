@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Resume.Application.Services.Interface.User;
-using Resume.Domain.Dtos.User;
+﻿using Microsoft.AspNetCore.Mvc;
+using Resume.Application.Dtos.User;
+using Resume.Application.Services.Interface;
 
 namespace ServiceHost.Areas.Administration.Controllers
 {
@@ -11,12 +10,9 @@ namespace ServiceHost.Areas.Administration.Controllers
 
         private readonly IUserService _userService;
 
-
-
         #endregion
 
         #region Constructor
-
         public UserController(IUserService userService)
         {
             _userService = userService;
@@ -24,54 +20,53 @@ namespace ServiceHost.Areas.Administration.Controllers
 
         #endregion
 
+
         #region Actions
 
-        #region Users List
+        #region User List
+
 
         [HttpGet("users-list")]
-        public async Task<IActionResult> UserList(FilterUserDto filter, string fullname, string mobile)
+        public async Task<IActionResult> UserList(FilterUserDto filter)
         {
-            filter.Fullname = fullname;
-            filter.Mobile = mobile;
-            var users = await _userService.GetAllUsers(filter);
+            var users = await _userService.FilterUsers(filter);
             return View(users);
         }
+
 
         #endregion
 
         #region Create User
 
         [HttpGet("create-user")]
-        public ActionResult CreateUser()
+        public IActionResult CreateUser()
         {
             return View();
         }
 
 
-        [HttpPost("create-user")]
+        [HttpPost("create-user"), ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(CreateUserDto user)
         {
-
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(user);
             }
 
             var result = await _userService.CreateUser(user);
 
             switch (result)
             {
-                case CreateUserResult.DuplicateMobile:
-                    TempData["DuplicateMobile"] = "شماره همراه تکراری می باشد";
-                    return View();
                 case CreateUserResult.Success:
-                    TempData["Success"] = "عملیات با موفقیت انجام شد";
-                    return RedirectToAction("UserList", "User", new { area = "administration" });
+                    await _userService.CreateUser(user);
+                    return RedirectToAction("UserList", "User", new { area = "Administration" });
 
+                case CreateUserResult.MobileExist:
+                    TempData["ErrorMessage"] = ErrorMessage;
+                    break;
                 case CreateUserResult.Error:
-                    return View(user);
-                default:
-                    return NotFound();
+                    TempData["ErrorMessage"] = ErrorMessage;
+                    break;
             }
 
             return View(user);
@@ -84,13 +79,14 @@ namespace ServiceHost.Areas.Administration.Controllers
         [HttpGet("edit-user/{id}")]
         public async Task<IActionResult> EditUser(long id)
         {
-            var user = await _userService.GetForEditUser(id);
+            var user = await _userService.GetUserForEdit(id);
 
-            ViewBag.Fullname = user.Fullname;
 
-            if (user == null)
+            ViewBag.FullName = user.Fullname;
+
+            if (user.Id == 0)
             {
-                return NotFound();
+                return RedirectToAction("PageNotFound", "Home");
             }
 
             return View(user);
@@ -100,23 +96,19 @@ namespace ServiceHost.Areas.Administration.Controllers
         [HttpPost("edit-user/{id}")]
         public async Task<IActionResult> EditUser(EditUserDto editUser)
         {
-
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(editUser);
             }
 
             var result = await _userService.EditUser(editUser);
 
             switch (result)
             {
+                case EditUserResult.NotFound:
+                    return RedirectToAction("PageNotFound", "Home");
                 case EditUserResult.Success:
                     return RedirectToAction("UserList", "User", new { area = "Administration" });
-                    break;
-                case EditUserResult.NotFoundUser:
-                    return NotFound();
-                    break;
-
             }
 
             return View();
@@ -124,32 +116,22 @@ namespace ServiceHost.Areas.Administration.Controllers
 
         #endregion
 
-        #region Block and UnBlock User
+        #region Block and Unblock User
 
         [HttpGet("block-user/{id}")]
         public async Task<IActionResult> BlockUser(long id)
         {
             var user = await _userService.BlockUser(id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return RedirectToAction("UserList", "User", new { area = "Administration" });
+            return user == null ? RedirectToAction("PageNotFound", "Home") : RedirectToAction("UserList", "User", new { area = "Administration" });
         }
 
         [HttpGet("unblock-user/{id}")]
-        public async Task<IActionResult> UnBlockUser(long id)
+        public async Task<IActionResult> UnblockUser(long id)
         {
-            var user = await _userService.UnBlockUser(id);
+            var user = await _userService.UnblockUser(id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return RedirectToAction("UserList", "User", new { area = "Administration" });
+            return user == null ? RedirectToAction("PageNotFound", "Home") : RedirectToAction("UserList", "User", new { area = "Administration" });
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿namespace Resume.Application.Services.Interface
+﻿namespace MarketPlace.Application.Services.Interfaces
 {
     public interface IPasswordHasher
     {

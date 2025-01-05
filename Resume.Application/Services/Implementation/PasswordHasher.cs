@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using Resume.Application.Services.Interface;
+using MarketPlace.Application.Services.Interfaces;
 
-namespace Resume.Application.Services.Implementation
+namespace MarketPlace.Application.Services.Implementations
 {
     public class PasswordHasher : IPasswordHasher
     {

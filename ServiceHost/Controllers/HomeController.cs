@@ -2,12 +2,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ServiceHost.Controllers
 {
-    public class HomeController : SiteBaseController
+    public class HomeController : Controller
     {
+        
         public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet("404-page-not-found")]
+        public IActionResult PageNotFound()
+        {
+            return View();
+        }
     }
 }
