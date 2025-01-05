@@ -1,9 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using Resume.Application.Services.Implementation.User;
-using Resume.Application.Services.Interface.User;
 using Resume.Domain.Context;
-using Resume.Domain.Entities.User;
-using Resume.Domain.Repository;
 using ServiceHost.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +27,25 @@ builder.Services.AddDbContext<DatabaseContext>(option =>
 
 #endregion
 
+
+#region Add Authentication
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie(options =>
+{
+    options.LoginPath = "/login";
+    options.LogoutPath = "/logout";
+    options.AccessDeniedPath = "/Administration/404-page-not-found";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(43200);
+});
+
+#endregion
+
 var app = builder.Build();
 
 
@@ -47,6 +63,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 

@@ -13,7 +13,7 @@ namespace ServiceHost.Configuration
             #region Repositories
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             #endregion
 

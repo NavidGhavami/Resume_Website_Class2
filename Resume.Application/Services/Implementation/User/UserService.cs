@@ -95,34 +95,27 @@ namespace Resume.Application.Services.Implementation.User
 
         public async Task<CreateUserResult> CreateUser(CreateUserDto user)
         {
+            if (await IsUserExistByMobile(user.Mobile)) return CreateUserResult.DuplicateMobile;
+            var hashPassword = _passwordHasher.EncodePasswordMd5(user.Password);
 
-
-            if (!await IsUserExistByMobile(user.Mobile))
+            var newUser = new Domain.Entities.User.User
             {
-                var hashPassword = _passwordHasher.EncodePasswordMd5(user.Password);
-                var newUser = new Domain.Entities.User.User
-                {
-                    Fullname = user.Fullname,
-                    Email = user.Email,
-                    Mobile = user.Mobile,
-                    BirthDate = user.BirthDate,
-                    BirthPlace = user.BirthPlace,
-                    Description = user.Description,
-                    Password = hashPassword,
-                    ConfirmPassword = hashPassword,
-                    IsBlock = user.IsBlock,
-                    Avatar = null,
-                };
+                Fullname = user.Fullname,
+                Email = user.Email,
+                Mobile = user.Mobile,
+                BirthDate = user.BirthDate,
+                BirthPlace = user.BirthPlace,
+                Description = user.Description,
+                Password = hashPassword,
+                ConfirmPassword = hashPassword,
+                IsBlock = user.IsBlock,
+                Avatar = null,
+            };
 
-                await _userRepository.AddEntity(newUser);
-                await _userRepository.SaveChanges();
+            await _userRepository.AddEntity(newUser);
+            await _userRepository.SaveChanges();
 
-                return CreateUserResult.Success;
-            }
-
-            return CreateUserResult.DuplicateMobile;
-
-
+            return CreateUserResult.Success;
         }
 
 
@@ -172,8 +165,8 @@ namespace Resume.Application.Services.Implementation.User
                 return EditUserResult.NotFoundUser;
             }
 
-            //var hashPassword = _passwordHasher.EncodePasswordMd5(user.Password);
-            var hashPassword = SHA256PasswordHasher.HashPasswordSHA256(command.Password);
+            var hashPassword = _passwordHasher.EncodePasswordMd5(user.Password);
+            //var hashPassword = SHA256PasswordHasher.HashPasswordSHA256(command.Password);
 
             user.Fullname = command.Fullname;
             user.Email = command.Email;
@@ -236,6 +229,65 @@ namespace Resume.Application.Services.Implementation.User
             await _userRepository.SaveChanges();
 
             return true;
+        }
+
+
+
+        #endregion
+
+        #region User Login
+
+        public async Task<UserLoginResult> UserLogin(LoginDto login)
+        {
+            var hashPassword = _passwordHasher.EncodePasswordMd5(login.Password);
+
+            var user = await _userRepository.GetQuery().AsQueryable()
+                .FirstOrDefaultAsync(x => x.Mobile == login.Mobile && x.Password == hashPassword);
+
+            if (user == null)
+            {
+                return UserLoginResult.Error;
+            }
+
+            if (user.Mobile != login.Mobile && user.Password != hashPassword)
+            {
+                return UserLoginResult.NotUserFound;
+            }
+
+            return UserLoginResult.Success;
+        }
+
+        public async Task<Domain.Entities.User.User> GetUserByMobile(string mobile)
+        {
+            var user = await _userRepository.GetQuery().AsQueryable().FirstOrDefaultAsync(x=>x.Mobile == mobile);
+
+            return new Domain.Entities.User.User
+            {
+                Fullname = user.Fullname,
+                Mobile = mobile,
+                Password = user.Password,
+                Avatar = user.Avatar
+            };
+        }
+
+        public async Task<UserDetailDto> GetUserById(long id)
+        {
+            var user = await _userRepository.GetEntityById(id);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserDetailDto
+            {
+                Id = user.Id,
+                Fullname = user.Fullname,
+                Mobile = user.Mobile,
+                Email = user.Email,
+                Avatar = user.Avatar,
+                IsBlock = user.IsBlock
+            };
         }
 
         #endregion

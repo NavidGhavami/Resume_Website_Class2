@@ -1,4 +1,9 @@
-﻿
+﻿@using Resume.Domain.Dtos.User
+
+@{
+    UserDetailDto user = ViewData["User"] as UserDetailDto ?? new UserDetailDto();
+}
+
 
 
 
@@ -12,7 +17,7 @@
                         <img src="~/AdminSite/assets/images/usrbig.jpg" alt="profile">
                     </div>
                     <div class="profile-info">
-                        <h3>حسین حیاتی</h3>
+                        <h3>@user.Fullname، عزیز</h3>
                         <p>خوش آمدید !</p>
                     </div>
                 </div>

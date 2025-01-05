@@ -27,9 +27,9 @@ namespace Resume.Domain.Repository
             await _dbSet.AddAsync(entity);
         }
 
-        public async Task GetEntityById(long entityId)
+        public async Task<TEntity> GetEntityById(long entityId)
         {
-            await _dbSet.SingleOrDefaultAsync(x => x.Id == entityId);
+            return await _dbSet.SingleOrDefaultAsync(x => x.Id == entityId);
         }
 
         public void EditEntity(TEntity entity)
