@@ -78,9 +78,9 @@ namespace ServiceHost.Controllers
 
 					return RedirectToAction("Index", "Home", new { area = "Administration" });
 
-                case UserLoginResult.Error:
-					TempData[ErrorMessage] = "خطایی رخ داد. لطفا مجددا تلاش نمایید";
-                    return View(userLogin);
+     //           case UserLoginResult.Error:
+					//TempData[ErrorMessage] = "خطایی رخ داد. لطفا مجددا تلاش نمایید";
+     //               return View(userLogin);
 				case UserLoginResult.UserNotFound:
 					TempData[ErrorMessage] = "کاربری با مشخصات فوق یافت نشد";
                     return View(userLogin);

@@ -49,8 +49,11 @@ namespace Resume.Domain.Entities.User
         [MaxLength(250, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         [Compare("Password", ErrorMessage = "کلمه های عبور مغایرت دارند")]
         public string ConfirmPassword { get; set; }
+        
+        [Display(Name = " سالت")]
+        public string? PasswordSalt { get; set; }
 
-        [Display(Name = " بلاک شده / نشده")]
+		[Display(Name = " بلاک شده / نشده")]
         public bool IsBlock { get; set; }
 
         [Display(Name = " تصویر آواتار")]

@@ -31,6 +31,7 @@
     <h2 class="card-inside-title" style="font-size : 22px; margin-top : 15px; margin-bottom:25px;">فرم ایجاد کاربر</h2>
     <form asp-area="Administration" asp-controller="User" asp-action="EditUser" method="post">
         <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="PasswordSalt" />
         <div class="row clearfix">
             <div class="col-sm-4">
                 <div class="form-group">

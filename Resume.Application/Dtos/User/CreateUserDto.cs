@@ -49,6 +49,8 @@ namespace Resume.Application.Dtos.User
 		[Compare("Password", ErrorMessage = "کلمه های عبور مغایرت دارند")]
 		public string ConfirmPassword { get; set; }
 
+		public string PasswordSalt { get; set; }
+
 		[Display(Name = " بلاک شده / نشده")]
 		public bool IsBlock { get; set; }
 

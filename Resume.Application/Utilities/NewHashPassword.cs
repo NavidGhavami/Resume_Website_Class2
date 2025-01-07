@@ -22,7 +22,25 @@ namespace Resume.Application.Utilities
             {
                 rng.GetBytes(randomBytes);
             }
-            return Convert.ToBase64String(randomBytes);
+            return Convert.ToBase64String(randomBytes); 
         }
-    }
+
+        public static bool CompareHashes(string hash1, string hash2)
+        {
+	        // Convert the hashes from Base64 strings to byte arrays
+	        byte[] hashBytes1 = Convert.FromBase64String(hash1);
+	        byte[] hashBytes2 = Convert.FromBase64String(hash2);
+
+	        // Compare the byte arrays directly for constant-time comparison
+	        // This prevents timing attacks that could reveal information about the password
+	        var len = hashBytes1.Length;
+	        var diff = 0;
+
+	        for (var i = 0; i < len; i++)
+	        {
+		        diff |= hashBytes1[i] ^ hashBytes2[i];
+	        }
+	        return diff == 0;
+        }
+	}
 }

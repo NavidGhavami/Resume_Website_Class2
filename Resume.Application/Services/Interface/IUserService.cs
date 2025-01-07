@@ -16,4 +16,6 @@ public interface IUserService : IAsyncDisposable
     Task<UserLoginResult> UserLogin(UserLoginDto login);
     Task<User> GetUserBy(string mobile);
     Task<UserDetailDto> GetUserById(long id);
+    Task<string> GetStoredSalt(string mobile);
+    Task<string> GetStoredPassword(string mobile);
 }

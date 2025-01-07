@@ -12,8 +12,8 @@ using Resume.Domain.Context;
 namespace Resume.Domain.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241103131408_Initial_Database")]
-    partial class Initial_Database
+    [Migration("20250107163521_Add_User_Entity")]
+    partial class Add_User_Entity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,16 @@ namespace Resume.Domain.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BirthDate")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("BirthPlace")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
                     b.Property<string>("ConfirmPassword")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -43,6 +53,11 @@ namespace Resume.Domain.Migrations
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(200)
@@ -68,6 +83,9 @@ namespace Resume.Domain.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("PasswordSalt")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");

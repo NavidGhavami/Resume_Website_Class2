@@ -129,6 +129,7 @@ namespace Resume.Application.Services.Implementation
 				Description = user.Description,
 				Password = user.Password,
 				ConfirmPassword = user.ConfirmPassword,
+				PasswordSalt = user.PasswordSalt,
 				IsBlock = user.IsBlock,
 				Avatar = user.Avatar,
 			};
@@ -136,13 +137,13 @@ namespace Resume.Application.Services.Implementation
 		public async Task<EditUserResult> EditUser(EditUserDto user)
 		{
 			var mainUser = await _userRepository.GetQuery().AsQueryable().FirstOrDefaultAsync(x => x.Id == user.Id);
-            var hashPassword = _passwordHasher.EncodePasswordMd5(user.Password);
-            //var hashPassword = PasswordHasher.HashPasswordSHA256(user.Password);
+			//var hashPassword = _passwordHasher.EncodePasswordMd5(user.Password);
+			//var hashPassword = PasswordHasher.HashPasswordSHA256(user.Password);
 
-            //var salt = NewHashPassword.GenerateSalt();
-            //var hashPassword = NewHashPassword.HashPassword(user.Password, salt);
+			var salt = NewHashPassword.GenerateSalt();
+			var hashPassword = NewHashPassword.HashPassword(user.Password, salt);
 
-            if (user.Id == 0)
+			if (user.Id == 0)
 			{
 				return EditUserResult.NotFound;
 			}
@@ -155,6 +156,7 @@ namespace Resume.Application.Services.Implementation
 			mainUser.Description = user.Description;
 			mainUser.Password = hashPassword;
 			mainUser.ConfirmPassword = hashPassword;
+			mainUser.PasswordSalt = salt;
 			mainUser.Avatar = user.Avatar;
 			mainUser.IsBlock = user.IsBlock;
 
@@ -204,7 +206,12 @@ namespace Resume.Application.Services.Implementation
 		}
 		public async Task<UserLoginResult> UserLogin(UserLoginDto login)
 		{
-			var hashPassword = _passwordHasher.EncodePasswordMd5(login.Password);
+			//var hashPassword = _passwordHasher.EncodePasswordMd5(login.Password);
+
+            var storedSalt = await GetStoredSalt(login.Mobile);
+            var storedHashPassword = await GetStoredPassword(login.Mobile);
+            var hashPassword = NewHashPassword.HashPassword(login.Password, storedSalt);
+            var isPasswordValid = NewHashPassword.CompareHashes(hashPassword, storedHashPassword);
 
 			var user = await _userRepository
 				.GetQuery()
@@ -217,14 +224,11 @@ namespace Resume.Application.Services.Implementation
 				return UserLoginResult.Error;
 			}
 
-			if (user.Mobile != login.Mobile && user.Password != hashPassword)
-			{
-				return UserLoginResult.UserNotFound;
-			}
 
-			return UserLoginResult.Success;
 
-		}
+            return isPasswordValid ? UserLoginResult.Success : UserLoginResult.UserNotFound;
+
+        }
 		public async Task<User> GetUserBy(string mobile)
 		{
 			var user = await _userRepository
@@ -266,7 +270,21 @@ namespace Resume.Application.Services.Implementation
 			};
 		}
 
-		#endregion
+        public async Task<string> GetStoredSalt(string mobile)
+        {
+            var user  = await _userRepository.GetQuery().AsQueryable().FirstOrDefaultAsync(x => x.Mobile == mobile);
+
+            return user.PasswordSalt;
+        }
+
+        public async Task<string> GetStoredPassword(string mobile)
+        {
+            var user = await _userRepository.GetQuery().AsQueryable().FirstOrDefaultAsync(x => x.Mobile == mobile);
+
+            return user.Password;
+        }
+
+        #endregion
 
 		#region Dispose
 
