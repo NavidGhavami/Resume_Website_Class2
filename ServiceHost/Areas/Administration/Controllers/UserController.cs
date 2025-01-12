@@ -48,10 +48,10 @@ namespace ServiceHost.Areas.Administration.Controllers
         [HttpPost("create-user"), ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(CreateUserDto user)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(user);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(user);
+            //}
 
             var result = await _userService.CreateUser(user);
 
@@ -94,14 +94,14 @@ namespace ServiceHost.Areas.Administration.Controllers
 
 
         [HttpPost("edit-user/{id}")]
-        public async Task<IActionResult> EditUser(EditUserDto editUser)
+        public async Task<IActionResult> EditUser(EditUserDto editUser, IFormFile avatar)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(editUser);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(editUser);
+            //}
 
-            var result = await _userService.EditUser(editUser);
+            var result = await _userService.EditUser(editUser,avatar);
 
             switch (result)
             {
