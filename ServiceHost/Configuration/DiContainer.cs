@@ -22,6 +22,7 @@ namespace ServiceHost.Configuration
             #region General Services
 
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IEducationService, EducationService>();
 
             #endregion
         }

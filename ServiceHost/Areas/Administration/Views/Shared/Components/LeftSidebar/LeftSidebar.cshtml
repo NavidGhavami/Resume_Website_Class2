@@ -41,6 +41,24 @@
                     </li>
                 </ul>
             </li>
+            
+            <li>
+                <a href="#" onClick="return false;" class="menu-toggle">
+                    <i class="menu-icon fas fa-school"></i>
+                    <span>مدیریت رزومه</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a asp-area="Administration" asp-controller="Resume" asp-action="FilterEducations" >لیست تحصیلات</a>
+                    </li>
+                    <li>
+                        <a asp-area="Administration" asp-controller="Resume" asp-action="FilterExperiences" >لیست سابقه کاری</a>
+                    </li>
+                    <li>
+                        <a asp-area="Administration" asp-controller="Resume" asp-action="FilterSkills" >لیست مهارت ها</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
     <!-- #Menu -->

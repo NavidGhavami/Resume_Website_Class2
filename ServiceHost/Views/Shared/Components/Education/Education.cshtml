@@ -1,0 +1,19 @@
+﻿@model List<Resume.Application.Dtos.Education.FilterEducationDto>
+
+
+	<div class="col-12">
+		<h2 class="title title--h3"><img class="title-icon" src="~/assets/icons/icon-education.svg" alt=""> تحصیلات</h2>
+		<div class="timeline">
+			@foreach (var item in Model)
+            {
+                <!-- Item -->
+                <article class="timeline__item">
+                    <h5 class="title title--h5 timeline__title">@item.UniversityName</h5>
+                    <span class="timeline__period">@item.EducationYear</span>
+                    <p class="timeline__description">@item.Description</p>
+                </article>
+            }
+		</div>
+	</div>
+
+	

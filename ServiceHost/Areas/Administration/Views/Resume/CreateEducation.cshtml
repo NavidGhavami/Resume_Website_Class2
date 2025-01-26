@@ -1,0 +1,67 @@
+﻿@model Resume.Application.Dtos.Education.CreateEducationDto
+
+
+
+@{
+    ViewData["Title"] = "ایجاد مقطع تحصیلی جدید";
+}
+
+
+<partial name="_AdminJqueryValidators" />
+
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <ul class="breadcrumb breadcrumb-style" style="float : right;">
+            <li class="breadcrumb-item">
+                <h4 class="page-title">@ViewData["Title"]</h4>
+            </li>
+            <li class="breadcrumb-item bcrumb-1">
+                <a asp-area="Administration" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-home"></i>داشبورد
+                </a>
+            </li>
+            <li class="breadcrumb-item bcrumb-2">
+                <a href="#" onclick="return false;">مدیریت تصیلات</a>
+            </li>
+            <li class="breadcrumb-item active">ایجاد مقطع تحصیلی جدید</li>
+        </ul>
+    </div>
+</div>
+
+<div class="card p-5">
+    <h2 class="card-inside-title" style="font-size : 22px; margin-top : 15px; margin-bottom:25px;">فرم ایجاد مقطع تحصیلی</h2>
+    <form asp-area="Administration" asp-controller="Resume" asp-action="CreateEducation" method="post">
+        <div class="row clearfix">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" asp-for="UniversityName" class="form-control mb-4" placeholder="نام دانشگاه / دانشکده">
+                        <span asp-validation-for="UniversityName" class="text-danger "></span>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="form-line">
+                        <input type="text" asp-for="EducationYear" class="form-control mb-4" placeholder="سال تحصیل">
+                        <span asp-validation-for="EducationYear" class="text-danger "></span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="form-line">
+                        <textarea class="form-control mb-4" asp-for="Description" placeholder="توضیحات"></textarea>
+                        <span asp-validation-for="Description" class="text-danger "></span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success btn-block" type="submit">ثبت اطلاعات</button>
+        </div>
+    </form>
+</div>

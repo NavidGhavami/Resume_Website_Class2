@@ -1,0 +1,71 @@
+﻿
+@model List<Resume.Application.Dtos.Education.FilterEducationDto>
+
+    
+@{
+    ViewData["Title"] = "لیست تحصیلات";
+}
+
+
+<div class="block-header">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <ul class="breadcrumb breadcrumb-style" style="float: right; ">
+                <li class="breadcrumb-item">
+                    <h4 class="page-title">@ViewData["Title"]</h4>
+                </li>
+                <li class="breadcrumb-item bcrumb-1">
+                    <a asp-area="Administration" asp-controller="Home" asp-action="Index">داشبورد</a>
+                </li>
+                <li class="breadcrumb-item bcrumb-2">
+                    <a href="#" onclick="return false;">@ViewData["Title"]</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="table-responsive m-t-40">
+                <table class="table table-hover table-striped table-bordered">
+                    <div class="form-line">
+                        <a asp-area="Administration" asp-controller="Resume" asp-action="CreateEducation" type="submit" class="btn btn-success submit m-3">ایجاد تحصیلات جدید</a>
+                    </div>
+                    <thead class="bg-black text-white">
+                        <tr>
+                            <th class="text-center">ردیف</th>
+                            <th class="text-center">نام دانشگاه</th>
+                            <th class="text-center">سال تحصیل</th>
+                            <th class="text-center">توضیحات</th>
+                            <th class="text-center">تاریخ ایجاد</th>
+                            <th class="text-center">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="text-center">@item.Id</td>
+                                <td class="text-center">@item.UniversityName</td>
+                                <td class="text-center">@item.EducationYear</td>
+                                <td class="text-center">@item.Description</td>
+                                <td class="text-center">@item.CreateDate</td>
+                                <td class="text-center">
+                                    <a asp-area="Administration" asp-controller="Resume" asp-action="EditEducation" asp-route-id="@item.Id" class="btn btn-warning">
+                                        <i class="material-icons">mode_edit</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
