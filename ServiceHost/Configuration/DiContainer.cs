@@ -23,6 +23,8 @@ namespace ServiceHost.Configuration
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IEducationService, EducationService>();
+            services.AddTransient<IExperienceService, ExperienceService>();
+            services.AddTransient<ISkillService, SkillService>();
 
             #endregion
         }

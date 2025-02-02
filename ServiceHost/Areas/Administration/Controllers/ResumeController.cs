@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resume.Application.Dtos.Education;
+using Resume.Application.Dtos.Experience;
 using Resume.Application.Services.Interface;
+using Resume.Domain.Entities.Skills;
 
 namespace ServiceHost.Areas.Administration.Controllers
 {
@@ -9,6 +11,8 @@ namespace ServiceHost.Areas.Administration.Controllers
         #region Fields
 
         private readonly IEducationService _educationService;
+        private readonly IExperienceService _experienceService;
+        private readonly ISkillService _skillService;
 
 
 
@@ -16,9 +20,11 @@ namespace ServiceHost.Areas.Administration.Controllers
 
         #region Constructor
 
-        public ResumeController(IEducationService educationService)
+        public ResumeController(IEducationService educationService, IExperienceService experienceService, ISkillService skillService)
         {
             _educationService = educationService;
+            _experienceService = experienceService;
+            _skillService = skillService;
         }
 
         #endregion
@@ -67,6 +73,102 @@ namespace ServiceHost.Areas.Administration.Controllers
             }
 
             return View(education);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Experience
+
+        #region Get All Experience Item
+
+        [HttpGet("experience-list")]
+        public async Task<IActionResult> FilterExperience()
+        {
+            var experience = await _experienceService.GetAllExperience();
+            return View(experience);
+        }
+
+        #endregion
+
+        #region Create Experienece
+
+        [HttpGet("create-experience")]
+        public IActionResult CreateExperience()
+        {
+            return View();
+        }
+
+
+        [HttpPost("create-experience"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateExperience(CreateExperienceDto experience)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(experience);
+            }
+
+            var result = await _experienceService.CreateExperience(experience);
+
+            switch (result)
+            {
+                case CreateExperienceResult.Success:
+                    return RedirectToAction("FilterExperience", "Resume", new { area = "Administration" });
+                case CreateExperienceResult.Error:
+                    TempData["ErrorMessage"] = ErrorMessage;
+                    break;
+            }
+
+            return View(experience);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Skills
+
+        #region Get All Skills Item
+
+        [HttpGet("skills-list")]
+        public async Task<IActionResult> FilterSkills()
+        {
+            var skills = await _skillService.GetAllSkills();
+            return View(skills);
+        }
+
+        #endregion
+
+        #region Create Experienece
+
+        [HttpGet("create-skill")]
+        public IActionResult CreateSkill()
+        {
+            return View();
+        }
+
+
+        [HttpPost("create-skill"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSkill(CreateSkillDto skill)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(skill);
+            }
+
+            var result = await _skillService.CreateSkill(skill);
+
+            switch (result)
+            {
+                case CreateSkillDto.CreateSkillResult.Success:
+                    return RedirectToAction("FilterSkills", "Resume", new { area = "Administration" });
+                case CreateSkillDto.CreateSkillResult.Error:
+                    TempData["ErrorMessage"] = ErrorMessage;
+                    break;
+            }
+
+            return View(skill);
         }
 
         #endregion
