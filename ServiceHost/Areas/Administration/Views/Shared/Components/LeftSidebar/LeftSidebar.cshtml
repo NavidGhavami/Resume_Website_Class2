@@ -32,7 +32,7 @@
             </li>
             <li>
                 <a href="#" onClick="return false;" class="menu-toggle">
-                    <i class="menu-icon ti-shopping-cart-full"></i>
+                    <i class="menu-icon ti-user"></i>
                     <span>مدیریت کاربران</span>
                 </a>
                 <ul class="ml-menu">
@@ -56,6 +56,18 @@
                     </li>
                     <li>
                         <a asp-area="Administration" asp-controller="Resume" asp-action="FilterSkills" >لیست مهارت ها</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li>
+                <a href="#" onClick="return false;" class="menu-toggle">
+                    <i class="menu-icon ti-star"></i>
+                    <span>مدیریت نمونه کارها</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a asp-area="Administration" asp-controller="Project" asp-action="FilterProject" >لیست نمونه کارها</a>
                     </li>
                 </ul>
             </li>

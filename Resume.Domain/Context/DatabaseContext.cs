@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Resume.Domain.Entities.Education;
 using Resume.Domain.Entities.Experience;
+using Resume.Domain.Entities.Project;
 using Resume.Domain.Entities.Skills;
 using Resume.Domain.Entities.User;
 
@@ -35,6 +36,12 @@ namespace Resume.Domain.Context
         public DbSet<Skills> Skills { get; set; }
 
         #endregion
+
+        #endregion
+
+        #region Project
+
+        public DbSet<Project> Projects { get; set; }
 
         #endregion
 
