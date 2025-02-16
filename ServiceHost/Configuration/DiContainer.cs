@@ -26,6 +26,7 @@ namespace ServiceHost.Configuration
             services.AddTransient<IExperienceService, ExperienceService>();
             services.AddTransient<ISkillService, SkillService>();
             services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IContactService, ContactService>();
 
             #endregion
         }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Resume.Domain.Entities.Contact;
 using Resume.Domain.Entities.Education;
 using Resume.Domain.Entities.Experience;
 using Resume.Domain.Entities.Project;
@@ -42,6 +43,12 @@ namespace Resume.Domain.Context
         #region Project
 
         public DbSet<Project> Projects { get; set; }
+
+        #endregion
+
+        #region Contact Us
+
+        public DbSet<Contact> Contacts { get; set; }
 
         #endregion
 
