@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Resume.Domain.Entities.Blog;
 using Resume.Domain.Entities.Contact;
 using Resume.Domain.Entities.Education;
 using Resume.Domain.Entities.Experience;
@@ -49,6 +50,13 @@ namespace Resume.Domain.Context
         #region Contact Us
 
         public DbSet<Contact> Contacts { get; set; }
+
+        #endregion
+
+        #region Blogs
+
+        public DbSet<ArticleCategory> ArticleCategories { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
         #endregion
 

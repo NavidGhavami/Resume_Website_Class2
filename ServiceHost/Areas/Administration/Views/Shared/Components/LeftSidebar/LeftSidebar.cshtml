@@ -74,13 +74,29 @@
             
             <li>
                 <a href="#" onClick="return false;" class="menu-toggle">
-                    <i class="menu-icon fa fa-message"></i>
+                    <i class="menu-icon fa fa-envelope"></i>
                     <span>مدیریت پیام ها</span>
                 </a>
                 <ul class="ml-menu">
                     <li>
                         <a asp-area="Administration" asp-controller="Home" asp-action="GetAllMessages">لیست پیام ها</a>
                     </li>
+                </ul>
+            </li>
+            
+            <li>
+                <a href="#" onClick="return false;" class="menu-toggle">
+                    <i class="menu-icon fas fa-book"></i>
+                    <span>مدیریت مقالات</span>
+                </a>
+                <ul class="ml-menu">
+                    <li>
+                        <a asp-area="Administration" asp-controller="Blog" asp-action="FilterArticleCategory" >لیست دسته بندی مقالات</a>
+                    </li>
+                    <li>
+                        <a asp-area="Administration" asp-controller="Blog" asp-action="FilterArticle">لیست مقالات</a>
+                    </li>
+                    
                 </ul>
             </li>
         </ul>
