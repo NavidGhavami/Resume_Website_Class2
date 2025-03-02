@@ -4,7 +4,7 @@ namespace Resume.Application.Dtos.Blog.Article
 {
     public class CreateArticleDto
     {
-        public long ArticleCategoryId { get; set; }
+        public long CategoryId { get; set; }
 
         [Display(Name = "عنوان مقاله")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]

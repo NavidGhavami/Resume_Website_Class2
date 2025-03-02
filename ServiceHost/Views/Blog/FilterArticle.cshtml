@@ -1,0 +1,35 @@
+﻿@model List<Resume.Application.Dtos.Blog.Article.FilterArticleDto>
+
+@{
+    ViewData["Title"] = "مقاله های من";
+}
+
+<div class="col-12 col-md-12 col-lg-10">
+	<div class="box box-content">
+		<div class="pb-2">
+			<h1 class="title title--h1 first-title title__separate">وبلاگ</h1>
+		</div>
+
+		<!-- News -->
+		<div class="news-grid">
+			@foreach (var blog in Model)
+            {
+                <!-- Post -->
+                <article class="news-item box">
+                    <div class="news-item__image-wrap overlay overlay--45">
+                        <div class="news-item__date"><span>@blog.CreateDate</span></div>
+                        <a class="news-item__link" asp-controller="Blog" asp-action="ArticleDetail"></a>
+                        <img class="cover ls-is-cached lazyloaded" src="~/uploads/@blog.ArticleImage" alt="@blog.ArticleTitle" title="@blog.ArticleTitle">
+                    </div>
+                    <div class="news-item__caption">
+                        <h2 class="title title--h4">@blog.ArticleTitle | @blog.ArticleCategoryTitle</h2>
+                        <p>@blog.ShortDescription</p>
+                    </div>
+                </article>
+            }
+		</div>
+	</div>
+
+	<!-- Footer -->
+	<footer class="footer">© 1399 ملیکا خلیلیان</footer>
+</div>

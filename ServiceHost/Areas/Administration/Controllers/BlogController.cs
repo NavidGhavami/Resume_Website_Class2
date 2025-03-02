@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Resume.Application.Dtos.Blog.Article;
 using Resume.Application.Dtos.Blog.ArticleCategory;
 using Resume.Application.Services.Interface;
-using Resume.Domain.Entities.Blog;
 
 namespace ServiceHost.Areas.Administration.Controllers
 {
@@ -15,7 +15,6 @@ namespace ServiceHost.Areas.Administration.Controllers
 
         #endregion
 
-
         #region Constructor
 
         public BlogController(IBlogService blogService)
@@ -24,7 +23,6 @@ namespace ServiceHost.Areas.Administration.Controllers
         }
 
         #endregion
-
 
         #region Article Category
 
@@ -52,6 +50,43 @@ namespace ServiceHost.Areas.Administration.Controllers
                 true => RedirectToAction("FilterArticleCategory", "Blog", new { area = "Administration" }),
                 false => RedirectToAction("PageNotFound", "Home")
             };
+        }
+
+        #endregion
+
+        #region Article
+
+        [HttpGet("article-list")]
+        public async Task<IActionResult> FilterArticle()
+        {
+            var article = await _blogService.GetAllArticle();
+            ViewBag.Category = await _blogService.GetAllArticleCategory();
+
+            return View(article);
+        }
+
+        [HttpGet("create-article")]
+        public async Task<IActionResult> CreateArticle()
+        {
+            var articleCategory = await _blogService.GetAllCategories();
+            ViewBag.Category = articleCategory;
+
+            return View();
+        }
+
+        [HttpPost("create-article"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateArticle(CreateArticleDto command, IFormFile articleImage)
+        {
+            var result = await _blogService.CreateArticle(command, articleImage);
+            var categories = await _blogService.GetAllArticleCategory();
+            ViewBag.Category = await _blogService.GetAllArticleCategory();
+
+            return result switch
+            {
+                true => RedirectToAction("FilterArticle", "Blog", new { area = "Administration" }),
+                false => RedirectToAction("PageNotFound", "Home")
+            };
+
         }
 
         #endregion
